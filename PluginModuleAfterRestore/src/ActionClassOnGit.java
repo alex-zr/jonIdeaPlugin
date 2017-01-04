@@ -1,6 +1,8 @@
 import ConrolPack.SwingTaskTable;
 import com.intellij.openapi.actionSystem.AnAction;
 import com.intellij.openapi.actionSystem.AnActionEvent;
+import com.intellij.openapi.actionSystem.CommonDataKeys;
+import com.intellij.openapi.editor.Editor;
 import org.apache.log4j.Logger;
 
 /**
@@ -34,9 +36,8 @@ public class ActionClassOnGit extends AnAction {
     @Override
     public void actionPerformed(AnActionEvent anActionEvent) {
 
-        // final Editor editor = anActionEvent.getData(CommonDataKeys.EDITOR); // сохранить как заготовку
-        // System.out.println(editor.getDocument().getText());// Получаем текст с окна ввода кода человека
         SwingTaskTable swingTaskTable = new SwingTaskTable(anActionEvent);
         swingTaskTable.createScen();
+
     }
 }

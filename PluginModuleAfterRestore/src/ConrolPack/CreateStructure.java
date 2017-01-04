@@ -1,14 +1,12 @@
 package ConrolPack;
 
 import Sprints_Tasks.Task;
-import com.intellij.history.utils.RunnableAdapter;
 import com.intellij.openapi.actionSystem.AnActionEvent;
 import com.intellij.openapi.actionSystem.CommonDataKeys;
 import com.intellij.openapi.project.Project;
 import com.intellij.openapi.vfs.VirtualFile;
 
 import java.io.*;
-import java.util.Properties;
 
 
 /**
@@ -42,6 +40,8 @@ public class CreateStructure {
                             new File(folderComponent.getCanonicalPath(), taskUrl).mkdirs();
 
                             createFileMethod(folderComponent.getCanonicalPath() + "/" + getChousenTast().getTaskFile().getFileUrl(), getChousenTast());
+
+
                         }
                     }
                 }

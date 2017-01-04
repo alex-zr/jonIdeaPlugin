@@ -95,7 +95,6 @@ public class SwingTaskTable {
                 if (me.getClickCount() == 2) {
                     jFrame.setVisible(false);
                     setTask(getTaskList().get(row - 1));
-
                     CreateStructure createStructure = new CreateStructure();
                     createStructure.createStructereMethod(getAnActionEvent(), getTask());
                 }
