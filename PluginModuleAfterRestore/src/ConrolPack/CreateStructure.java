@@ -8,6 +8,7 @@ import com.intellij.openapi.project.Project;
 import com.intellij.openapi.vfs.VirtualFile;
 
 import java.io.*;
+import java.util.Properties;
 
 
 /**
@@ -39,16 +40,19 @@ public class CreateStructure {
                             String taskUrl = getChousenTast().getTaskFile().getFileUrl();
 
                             new File(folderComponent.getCanonicalPath(), taskUrl).mkdirs();
+
+                            createFileMethod(folderComponent.getCanonicalPath() + "/" + getChousenTast().getTaskFile().getFileUrl(), getChousenTast());
+
                             String[] urlComponents = taskUrl.split("/");
 
-                            Thread thread1 = new Thread(new RunnableAdapter() {
+                        /*    Thread thread1 = new Thread(new RunnableAdapter() {
                                 @Override
                                 public void doRun() throws Exception {
-                                    Thread.sleep(7000);
+                                    Thread.sleep(5000);
                                     recurssion(0, folderComponent, urlComponents.length, task, urlComponents[urlComponents.length - 1]);
                                 }
                             });
-                            thread1.start();
+                            thread1.start();*/
                         }
                     }
                 }
@@ -59,9 +63,10 @@ public class CreateStructure {
 
     public void recurssion(int iteration, VirtualFile vf, int pathSize, Task task, String lastFolder) {
 
-        if (iteration == pathSize) {
+
+/*        if (iteration == pathSize) {
             return;
-        }
+        }*/
 
         for (VirtualFile file1 : vf.getChildren()) {
 
@@ -79,7 +84,7 @@ public class CreateStructure {
         System.out.println(path + " =:Path in createFileMethod");
 
         FileWriter fileWriter = null;
-        String filename = task.getName();
+        String filename = task.getName() + ".java";
         File classFile = new File(path, filename);
 
         try {
@@ -87,7 +92,8 @@ public class CreateStructure {
             fileWriter = new FileWriter(classFile);
 
             String taskText = task.getTaskFile().getFileComponent();
-            BufferedReader fin2 = new BufferedReader(new StringReader(taskText));
+            String packageText = task.getTaskFile().getFileUrl().replace("/", ".");
+            BufferedReader fin2 = new BufferedReader(new StringReader("package " + packageText + ";\n " + taskText));
 
             while ((taskText = fin2.readLine()) != null) {
                 fileWriter.write(taskText);
