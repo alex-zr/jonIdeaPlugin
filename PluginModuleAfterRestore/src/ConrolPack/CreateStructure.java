@@ -42,17 +42,6 @@ public class CreateStructure {
                             new File(folderComponent.getCanonicalPath(), taskUrl).mkdirs();
 
                             createFileMethod(folderComponent.getCanonicalPath() + "/" + getChousenTast().getTaskFile().getFileUrl(), getChousenTast());
-
-                            String[] urlComponents = taskUrl.split("/");
-
-                        /*    Thread thread1 = new Thread(new RunnableAdapter() {
-                                @Override
-                                public void doRun() throws Exception {
-                                    Thread.sleep(5000);
-                                    recurssion(0, folderComponent, urlComponents.length, task, urlComponents[urlComponents.length - 1]);
-                                }
-                            });
-                            thread1.start();*/
                         }
                     }
                 }
@@ -61,13 +50,7 @@ public class CreateStructure {
     }
 
 
-    public void recurssion(int iteration, VirtualFile vf, int pathSize, Task task, String lastFolder) {
-
-
-/*        if (iteration == pathSize) {
-            return;
-        }*/
-
+/*    public void recurssion(int iteration, VirtualFile vf, int pathSize, Task task, String lastFolder) {
         for (VirtualFile file1 : vf.getChildren()) {
 
             if (file1.getName().equals(lastFolder)) {
@@ -77,11 +60,9 @@ public class CreateStructure {
             recurssion(iteration, file1, pathSize, task, lastFolder);
         }
         return;
-    }
+    }*/
 
     public void createFileMethod(String path, Task task) {
-
-        System.out.println(path + " =:Path in createFileMethod");
 
         FileWriter fileWriter = null;
         String filename = task.getName() + ".java";
