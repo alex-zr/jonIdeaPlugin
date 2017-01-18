@@ -28,7 +28,7 @@ public class RemoteService {
     }
 
     private List<Task> tasks = new ArrayList<Task>();
-    private Task task1_1 = new Task("sprint1", "Task1Name", "Вывести на экран надпись «Жить хорошо, а хорошо жить еще лучше»", new TaskFile("sprint1/Task1Name", "public class Task1Name{\n public static void main(String[] args){\n System.out.println(\" Hello1 \");}\n}"));
+    private Task task1_1 = new Task("sprint1", "Task1Name", "Вывести на экран надпись «Жить хорошо, а хорошо жить еще лучше»", new TaskFile("sprint1/Task1Name", "public class Task1Name{\n  public static void main(String[] args){\n System.out.println( \" Hello1 \" );}\n}"));
     private Task task1_1_1 = new Task("sprint1", "Task1_2Name", "Вывести на экран надпись «Жить хорошо, а хорошо жить еще лучше»", new TaskFile("sprint1/Task1Name", "public class Task1_2Name{\n public static void main(String[] args){\n System.out.println(\" Hello1_2 \");}\n}"));
 
     private Task task1_2 = new Task("sprint1", "Task2Name", "Используя цикл вывести на экран сто раз надпись:«Я никогда не буду работать за копейки. Амиго»", new TaskFile("sprint1/Task2Name", "public class Task2Name{\n public static void main(String[] args){\n System.out.println(\" Hello2 \");}\n}"));

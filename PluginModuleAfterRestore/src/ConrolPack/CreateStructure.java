@@ -1,26 +1,30 @@
 package ConrolPack;
 
 import Sprints_Tasks.Task;
+
 import com.intellij.openapi.actionSystem.AnActionEvent;
 import com.intellij.openapi.actionSystem.CommonDataKeys;
+import com.intellij.openapi.application.ApplicationManager;
 import com.intellij.openapi.project.Project;
 import com.intellij.openapi.vfs.VirtualFile;
 
 import java.io.*;
-
+import java.nio.charset.Charset;
 
 /**
  * Created by ${BIM} on 11.12.2016.
  */
+
 public class CreateStructure {
 
-    private Task chousenTast;
+    public CreateStructure(AnActionEvent anActionEvent, Task task) {
+        this.anActionEvent = anActionEvent;
+        this.chousenTask = task;
+    }
 
-    public void createStructereMethod(AnActionEvent anActionEvent, Task task) {
+    public void createStructereMethod() {
 
-        setChousenTast(task);
-
-        final Project project = anActionEvent.getData(CommonDataKeys.PROJECT);
+        final Project project = getAnActionEvent().getData(CommonDataKeys.PROJECT);
 
         for (int i = 0; i < project.getBaseDir().getChildren().length; i++) {
             VirtualFile virtualFile = project.getBaseDir().getChildren()[i].getCanonicalFile();
@@ -35,13 +39,11 @@ public class CreateStructure {
 
                         if (folderComponent.getName().equals("java")) {
 
-                            String taskUrl = getChousenTast().getTaskFile().getFileUrl();
+                            String taskUrl = getChousenTask().getTaskFile().getFileUrl();
 
-                            new File(folderComponent.getCanonicalPath(), taskUrl).mkdirs();
-
-                            createFileMethod(folderComponent.getCanonicalPath() + "/" + getChousenTast().getTaskFile().getFileUrl(), getChousenTast());
-
-
+                            VirtualFile finalFolder = structureCreation(folderComponent, taskUrl);
+                            createFileMethod(finalFolder, getChousenTask());
+                            project.getBaseDir().refresh(true, true);
                         }
                     }
                 }
@@ -50,52 +52,67 @@ public class CreateStructure {
     }
 
 
-/*    public void recurssion(int iteration, VirtualFile vf, int pathSize, Task task, String lastFolder) {
-        for (VirtualFile file1 : vf.getChildren()) {
+    public VirtualFile structureCreation(VirtualFile virtualFile, String subDirectories) {
+        String[] subDir = subDirectories.split("/");
 
-            if (file1.getName().equals(lastFolder)) {
-                createFileMethod(file1.getCanonicalPath(), task);
-                break;
+        for (int i = 0; i < subDir.length; i++) {
+
+            String folderName = subDir[i];
+            VirtualFile subDirectory = virtualFile.findChild(folderName);
+            final VirtualFile finalVirtualFile;
+            if (subDirectory == null) {
+                finalVirtualFile = virtualFile;
+                ApplicationManager.getApplication().runWriteAction(() -> {
+                    try {
+                        finalVirtualFile.createChildDirectory(null, folderName);
+                    } catch (IOException e) {
+                        e.printStackTrace();
+                    }
+                });
+                virtualFile = finalVirtualFile.findChild(folderName);
+            } else {
+                virtualFile = subDirectory;
             }
-            recurssion(iteration, file1, pathSize, task, lastFolder);
         }
-        return;
-    }*/
+        return virtualFile;
+    }
 
-    public void createFileMethod(String path, Task task) {
 
-        FileWriter fileWriter = null;
-        String filename = task.getName() + ".java";
-        File classFile = new File(path, filename);
-
-        try {
-            classFile.createNewFile();
-            fileWriter = new FileWriter(classFile);
-
-            String taskText = task.getTaskFile().getFileComponent();
-            String packageText = task.getTaskFile().getFileUrl().replace("/", ".");
-            BufferedReader fin2 = new BufferedReader(new StringReader("package " + packageText + ";\n " + taskText));
-
-            while ((taskText = fin2.readLine()) != null) {
-                fileWriter.write(taskText);
-            }
-
-        } catch (IOException e) {
-            e.printStackTrace();
-        } finally {
+    void createFileMethod(VirtualFile virtualFile, Task task) {
+        ApplicationManager.getApplication().runWriteAction(() -> {
             try {
-                fileWriter.close();
+                VirtualFile classFile = virtualFile.findOrCreateChildData(null, task.getName() + ".java");
+                Charset utf8 = Charset.forName("UTF-8");
+                classFile.setCharset(utf8);
+                String taskText = "package " + task.getTaskFile().getFileUrl().replaceFirst("/", ".") + ";\n" + task.getTaskFile().getFileComponent();
+                classFile.setBinaryContent(taskText.getBytes(utf8));
             } catch (IOException e) {
                 e.printStackTrace();
             }
-        }
+        });
     }
 
-    public Task getChousenTast() {
-        return chousenTast;
+    public CreateStructure() {
     }
 
-    public void setChousenTast(Task chousenTast) {
-        this.chousenTast = chousenTast;
+    private Task chousenTask;
+
+    private AnActionEvent anActionEvent;
+
+    public Task getChousenTask() {
+        return chousenTask;
     }
+
+    public void setChousenTast(Task chousenTask) {
+        this.chousenTask = chousenTask;
+    }
+
+    public AnActionEvent getAnActionEvent() {
+        return anActionEvent;
+    }
+
+    public void setAnActionEvent(AnActionEvent anActionEvent) {
+        this.anActionEvent = anActionEvent;
+    }
+
 }

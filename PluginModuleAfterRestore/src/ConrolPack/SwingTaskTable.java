@@ -2,15 +2,17 @@ package ConrolPack;
 
 import Sprints_Tasks.Sprint;
 import Sprints_Tasks.Task;
-import Sprints_Tasks.TaskFile;
 import com.intellij.openapi.actionSystem.AnActionEvent;
 import com.intellij.ui.table.JBTable;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 
+
 import javax.swing.*;
+import javax.swing.border.EmptyBorder;
 import javax.swing.table.DefaultTableCellRenderer;
 import javax.swing.table.DefaultTableModel;
+import javax.swing.table.TableCellRenderer;
 import javax.swing.table.TableColumn;
 import java.awt.*;
 import java.awt.event.MouseAdapter;
@@ -22,16 +24,12 @@ import java.util.List;
  */
 public class SwingTaskTable {
 
-    public SwingTaskTable() {
-    }
-
     public SwingTaskTable(AnActionEvent anActionEvent) {
         this.anActionEvent = anActionEvent;
     }
 
     private ObservableList<TableInterfaceInfo> interfaceInfoData;
     private AnActionEvent anActionEvent;
-    private TaskFile taskFile;
     private List<Task> taskList;
     private List<Sprint> sprints;
     private Task task;
@@ -50,21 +48,26 @@ public class SwingTaskTable {
         TableColumn tablecolumn2 = new TableColumn();
         TableColumn tablecolumn3 = new TableColumn();
         JTable jTable = new JBTable(model);
-
-
+        jTable.setRowHeight(80);
+        jTable.setSize(jFrame.getWidth(), jFrame.getHeight());
         RemoteService remoteService = new RemoteService();
+        MultiLineCellRenderer multiLineCellRenderer = new MultiLineCellRenderer();
+
 
         model.addColumn(tablecolumn1, new String[]{"Задание"});
         model.addColumn(tablecolumn2, new String[]{"Описание"});
         model.addColumn(tablecolumn3, new String[]{"Оценка"});
         /*http://javatalks.ru/topics/43915?page=1#224416 для высоты ячейки*/
         centerRenderer.setHorizontalAlignment(JLabel.CENTER);
-        centerRenderer.setEnabled(false);
 
         jTable.setSize(jFrame.getWidth(), jFrame.getHeight());
 
+
         jFrame.getContentPane().add(jTable);
-        jFrame.setSize(800, 600);
+        Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
+        double width = screenSize.getWidth();
+        double height = screenSize.getHeight();
+        jFrame.setSize((int) (width - 150), (int) (height - 100));
 
         setInterfaceInfoData(FXCollections.observableArrayList());
         setSprints(remoteService.getUserSprints("User", "User"));
@@ -74,17 +77,12 @@ public class SwingTaskTable {
 
             for (int z = 0; z < getTaskList().size(); z++) {
                 getInterfaceInfoData().add(new TableInterfaceInfo(getTask(), getTaskList().get(z).getName(), getTaskList().get(z).getTaskInfo(), getTaskList().get(z).getTaskFile()));
-
                 model.addRow(new Object[]{getInterfaceInfoData().get(z).getTaskName(), getInterfaceInfoData().get(z).getTaskInfo()});
             }
         }
 
-        for (int r = 1; r < jTable.getRowCount(); r++) {
-            jTable.setRowHeight(r, 45);
-        }
-
         for (int w = 0; w < jTable.getColumnCount(); w++) {
-            jTable.getColumnModel().getColumn(w).setCellRenderer(centerRenderer);
+            jTable.getColumnModel().getColumn(w).setCellRenderer((TableCellRenderer) multiLineCellRenderer.getTableCellRendererComponent(jTable, getInterfaceInfoData().get(w).getTaskInfo(), false, false, w, 2));
         }
 
         jTable.addMouseListener(new MouseAdapter() {
@@ -94,14 +92,53 @@ public class SwingTaskTable {
                 int row = table.rowAtPoint(p);
                 if (me.getClickCount() == 2) {
                     jFrame.setVisible(false);
+                    if (row == 0) {
+                        row = 1;
+                    }
                     setTask(getTaskList().get(row - 1));
-                    CreateStructure createStructure = new CreateStructure();
-                    createStructure.createStructereMethod(getAnActionEvent(), getTask());
+                    CreateStructure createStructure = new CreateStructure(getAnActionEvent(), getTask());
+                    createStructure.createStructereMethod();
                 }
             }
         });
 
         jFrame.setVisible(true);
+    }
+
+    class MultiLineCellRenderer extends JTextArea implements TableCellRenderer {
+
+        public MultiLineCellRenderer() {
+            setLineWrap(true);
+            setWrapStyleWord(true);
+            setOpaque(true);
+        }
+
+        public Component getTableCellRendererComponent(JTable table, Object value, boolean isSelected, boolean hasFocus, int row, int column) {
+            if (isSelected) {
+
+                setForeground(table.getSelectionForeground());
+                setBackground(table.getSelectionBackground());
+            } else {
+
+                setForeground(table.getForeground());
+                setBackground(table.getBackground());
+            }
+            setFont(table.getFont());
+            if (hasFocus) {
+
+                setBorder(UIManager.getBorder("Table.focusCellHighlightBorder"));
+                if (table.isCellEditable(row, column)) {
+                    setForeground(UIManager.getColor("Table.focusCellForeground"));
+                }
+            } else {
+                setBorder(new EmptyBorder(1, 2, 1, 2));
+            }
+            setText((value == null) ? "" : value.toString());
+            return this;
+        }
+    }
+
+    public SwingTaskTable() {
     }
 
     public ObservableList<TableInterfaceInfo> getInterfaceInfoData() {
@@ -118,14 +155,6 @@ public class SwingTaskTable {
 
     public void setAnActionEvent(AnActionEvent anActionEvent) {
         this.anActionEvent = anActionEvent;
-    }
-
-    public TaskFile getTaskFile() {
-        return taskFile;
-    }
-
-    public void setTaskFile(TaskFile taskFile) {
-        this.taskFile = taskFile;
     }
 
     public List<Task> getTaskList() {
