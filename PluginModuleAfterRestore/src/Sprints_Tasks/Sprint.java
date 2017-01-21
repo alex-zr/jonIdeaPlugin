@@ -9,7 +9,7 @@ import java.util.List;
 public class Sprint {
 
     private String name;
-    private List<Task> tasks = new ArrayList<Task>();
+    private ArrayList<Task> tasks = new ArrayList<Task>();
 
     public Sprint() {
     }
@@ -26,11 +26,11 @@ public class Sprint {
         this.name = name;
     }
 
-    public List<Task> getTasks() {
+    public ArrayList<Task> getTasks() {
         return tasks;
     }
 
-    public void setTasks(List<Task> tasks) {
+    public void setTasks(ArrayList<Task> tasks) {
         this.tasks = tasks;
     }
 
