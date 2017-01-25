@@ -5,23 +5,41 @@ package Sprints_Tasks;
  */
 public class Task {
 
+    private Long id;
     private String sprintName;
     private String name;
     private String taskInfo;
     private TaskFile taskFile;
+    private String className; /*name*/
+    private String PackageName;/*name*/
 
     public Task() {
     }
 
-    public Task(String sprintName, String name, String taskInfo, TaskFile taskFile) {
+    public Task(Long id, String sprintName, String name, String taskInfo, TaskFile taskFile, String className, String packageName) {
+        this.id = id;
         this.sprintName = sprintName;
         this.name = name;
         this.taskInfo = taskInfo;
         this.taskFile = taskFile;
+        this.className = className;
+        PackageName = packageName;
     }
 
-    public String getFullName() {
-        return sprintName + " " + name;
+    public Long getId() {
+        return id;
+    }
+
+    public void setId(Long id) {
+        this.id = id;
+    }
+
+    public String getSprintName() {
+        return sprintName;
+    }
+
+    public void setSprintName(String sprintName) {
+        this.sprintName = sprintName;
     }
 
     public String getName() {
@@ -30,15 +48,6 @@ public class Task {
 
     public void setName(String name) {
         this.name = name;
-    }
-
-
-    public String getSprintName() {
-        return sprintName;
-    }
-
-    public void setSprintName(String sprintName) {
-        this.sprintName = sprintName;
     }
 
     public String getTaskInfo() {
@@ -57,9 +66,19 @@ public class Task {
         this.taskFile = taskFile;
     }
 
+    public String getClassName() {
+        return className;
+    }
 
-    @Override
-    public String toString() {
-        return "Sprints_Tasks.Task [sprint =" + sprintName + ", name=" + name + ", taskFile=" + taskFile + "]";
+    public void setClassName(String className) {
+        this.className = className;
+    }
+
+    public String getPackageName() {
+        return PackageName;
+    }
+
+    public void setPackageName(String packageName) {
+        PackageName = packageName;
     }
 }

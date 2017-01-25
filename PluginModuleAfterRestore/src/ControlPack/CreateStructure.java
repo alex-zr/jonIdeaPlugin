@@ -1,4 +1,4 @@
-package ConrolPack;
+package ControlPack;
 
 import Sprints_Tasks.Task;
 

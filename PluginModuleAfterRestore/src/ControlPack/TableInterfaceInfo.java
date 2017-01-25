@@ -1,6 +1,5 @@
-package ConrolPack;
+package ControlPack;
 
-import Sprints_Tasks.Task;
 import Sprints_Tasks.TaskFile;
 
 /**

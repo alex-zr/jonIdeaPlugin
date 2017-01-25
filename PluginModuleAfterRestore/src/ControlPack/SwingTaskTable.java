@@ -1,12 +1,13 @@
-package ConrolPack;
+package ControlPack;
 
+import Exceptions.ClassNameNotFoundException;
+import Exceptions.PackageNotFoundException;
 import Sprints_Tasks.Sprint;
 import Sprints_Tasks.Task;
 import com.intellij.openapi.actionSystem.AnActionEvent;
 import com.intellij.ui.table.JBTable;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
-
 
 import javax.swing.*;
 import javax.swing.border.EmptyBorder;
@@ -68,7 +69,11 @@ public class SwingTaskTable {
         getjTable().setSize(jFrame.getWidth(), jFrame.getHeight());
 
 
-        jFrame.getContentPane().add(getjTable());
+        getjTable().setAutoResizeMode(JTable.AUTO_RESIZE_ALL_COLUMNS);
+
+
+
+        jFrame.getContentPane().add(new JScrollPane(getjTable(), JScrollPane.VERTICAL_SCROLLBAR_AS_NEEDED, JScrollPane.HORIZONTAL_SCROLLBAR_AS_NEEDED));
         Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
         double width = screenSize.getWidth();
         double height = screenSize.getHeight();
@@ -76,25 +81,32 @@ public class SwingTaskTable {
 
         setInterfaceInfoData(FXCollections.observableArrayList());
 
-        setSprints(remoteService.getUserSprints("User", "User"));
+
+        /*remoteService.getSprintsAsJSON();*/
+        // setSprints(remoteService.getUserSprints());
 
 
-        /*Нужно переписать...!!!! getInterfaceInfoData() отрабатывает не корректно*/
-        for (Sprint sprint : getSprints()) {
-            for (Task task1 : sprint.getTasks()) {
-                setTableInterfaceInfo(new TableInterfaceInfo(task1.getName(), task1.getTaskInfo(), task1.getTaskFile()));
-                model.addRow(new Object[]{getTableInterfaceInfo().getTaskName(), task1.getTaskInfo(), "", task1});
+        try {
+            for (Sprint sprint : remoteService.getUserSprints()) {
+                for (Task task1 : sprint.getTasks()) {
+                    setTableInterfaceInfo(new TableInterfaceInfo(task1.getName(), task1.getTaskInfo(), task1.getTaskFile()));
+                    model.addRow(new Object[]{getTableInterfaceInfo().getTaskName(), task1.getTaskInfo(), "", task1});
 
-                for (int w = 0; w < getjTable().getColumnCount(); w++) {
-                    getjTable().getColumnModel().getColumn(w).setCellRenderer((TableCellRenderer) multiLineCellRenderer.getTableCellRendererComponent(getjTable(), getTableInterfaceInfo().getTaskInfo(), false, false, w, 2));
+                    for (int w = 0; w < getjTable().getColumnCount(); w++) {
+                        getjTable().getColumnModel().getColumn(w).setCellRenderer((TableCellRenderer) multiLineCellRenderer.getTableCellRendererComponent(getjTable(), getTableInterfaceInfo().getTaskInfo(), false, false, w, 2));
 
-                    if (w == 3) {
-                        getjTable().getColumnModel().getColumn(w).setMaxWidth(0);
-                        getjTable().getColumnModel().getColumn(w).setMinWidth(0);
-                        getjTable().getColumnModel().getColumn(w).setWidth(0);
+                        if (w == 3) {
+                            getjTable().getColumnModel().getColumn(w).setMaxWidth(0);
+                            getjTable().getColumnModel().getColumn(w).setMinWidth(0);
+                            getjTable().getColumnModel().getColumn(w).setWidth(0);
+                        }
                     }
                 }
             }
+        } catch (ClassNameNotFoundException e) {
+            e.printStackTrace();
+        } catch (PackageNotFoundException e) {
+            e.printStackTrace();
         }
 /*
         for (int i = 0; i < getSprints().size(); i++) {
