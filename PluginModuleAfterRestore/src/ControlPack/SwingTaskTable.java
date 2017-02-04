@@ -58,7 +58,6 @@ public class SwingTaskTable {
         RemoteService remoteService = new RemoteService();
         MultiLineCellRenderer multiLineCellRenderer = new MultiLineCellRenderer();
 
-
         model.addColumn(tablecolumn1, new String[]{"Задание"});
         model.addColumn(tablecolumn2, new String[]{"Описание"});
         model.addColumn(tablecolumn3, new String[]{"Оценка"});
@@ -70,7 +69,6 @@ public class SwingTaskTable {
 
 
         getjTable().setAutoResizeMode(JTable.AUTO_RESIZE_ALL_COLUMNS);
-
 
 
         jFrame.getContentPane().add(new JScrollPane(getjTable(), JScrollPane.VERTICAL_SCROLLBAR_AS_NEEDED, JScrollPane.HORIZONTAL_SCROLLBAR_AS_NEEDED));
@@ -108,20 +106,6 @@ public class SwingTaskTable {
         } catch (PackageNotFoundException e) {
             e.printStackTrace();
         }
-/*
-        for (int i = 0; i < getSprints().size(); i++) {
-            setTaskList(getSprints().get(i).getTasks());
-
-         //   setTaskList(getSprints().get(i).getTasks());
-
-            for (int z = 0; z < getTaskList().size(); z++) {
-                getInterfaceInfoData().add(new TableInterfaceInfo(getTaskList().get(z).getName(), getTaskList().get(z).getTaskInfo(), getTaskList().get(z).getTaskFile()));
-                model.addRow(new Object[]{getInterfaceInfoData().get(z).getTaskName(), getInterfaceInfoData().get(z).getTaskInfo()});
-            }
-        //    getInterfaceInfoData().removeAll();
-        }
-*/
-
 
         getjTable().addMouseListener(new MouseAdapter() {
             public void mousePressed(MouseEvent me) {
@@ -133,8 +117,6 @@ public class SwingTaskTable {
                     if (row == 0) {
                         row = 1;
                     }
-                    //               setTask(getTaskList().get(row - 1));
-
                     setTask((Task) getjTable().getModel().getValueAt(row, 3));
 
                     CreateStructure createStructure = new CreateStructure(getAnActionEvent(), getTask());

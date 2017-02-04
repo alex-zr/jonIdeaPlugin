@@ -41,7 +41,9 @@ public class CreateStructure {
 
                             String taskUrl = getChousenTask().getTaskFile().getFileUrl();
 
-                            VirtualFile finalFolder = structureCreation(folderComponent, taskUrl);
+                            String taskName = getChousenTask().getName();
+
+                            VirtualFile finalFolder = structureCreation(folderComponent, taskUrl, taskName);
                             createFileMethod(finalFolder, getChousenTask());
                             project.getBaseDir().refresh(true, true);
                         }
@@ -51,46 +53,60 @@ public class CreateStructure {
         }
     }
 
-
-    public VirtualFile structureCreation(VirtualFile virtualFile, String subDirectories) {
-        String[] subDir = subDirectories.split("/");
-
-        for (int i = 0; i < subDir.length; i++) {
-
-            String folderName = subDir[i];
-            VirtualFile subDirectory = virtualFile.findChild(folderName);
-            final VirtualFile finalVirtualFile;
-            if (subDirectory == null) {
-                finalVirtualFile = virtualFile;
-                ApplicationManager.getApplication().runWriteAction(() -> {
-                    try {
-                        finalVirtualFile.createChildDirectory(null, folderName);
-                    } catch (IOException e) {
-                        e.printStackTrace();
-                    }
-                });
-                virtualFile = finalVirtualFile.findChild(folderName);
-            } else {
-                virtualFile = subDirectory;
-            }
-        }
-        return virtualFile;
-    }
-
-
     void createFileMethod(VirtualFile virtualFile, Task task) {
         ApplicationManager.getApplication().runWriteAction(() -> {
             try {
-                VirtualFile classFile = virtualFile.findOrCreateChildData(null, task.getName() + ".java");
+                VirtualFile classFile = virtualFile.findOrCreateChildData(null, task.getTaskFile().getFileUrl().split("/")[task.getTaskFile().getFileUrl().split("/").length - 1] + ".java");
                 Charset utf8 = Charset.forName("UTF-8");
                 classFile.setCharset(utf8);
-                String taskText = "package " + task.getTaskFile().getFileUrl().replaceFirst("/", ".") + ";\n" + task.getTaskFile().getFileComponent();
+                String taskText = task.getTaskFile().getFileComponent(); //"package " + task.getTaskFile().getFileUrl().replaceFirst("/", ".") + ";\n" + task.getTaskFile().getFileComponent();
                 classFile.setBinaryContent(taskText.getBytes(utf8));
             } catch (IOException e) {
                 e.printStackTrace();
             }
         });
     }
+
+
+    public VirtualFile structureCreation(VirtualFile virtualFile, String subDirectories, String fileNAme) {
+        String[] subDir = subDirectories.split("/");
+
+        if (subDir.length > 1) {
+            for (int i = 0; i < subDir.length; i++) {
+
+                String folderName = subDir[i];
+                VirtualFile subDirectory = virtualFile.findChild(folderName);
+                final VirtualFile finalVirtualFile;
+                if (subDirectory == null) {
+                    finalVirtualFile = virtualFile;
+                    ApplicationManager.getApplication().runWriteAction(() -> {
+                        try {
+                            finalVirtualFile.createChildDirectory(null, folderName);
+                        } catch (IOException e) {
+                            e.printStackTrace();
+                        }
+                    });
+                    virtualFile = finalVirtualFile.findChild(folderName);
+                } else {
+                    virtualFile = subDirectory;
+                }
+            }
+        } else {
+            final VirtualFile finalVirtualFile;
+            finalVirtualFile = virtualFile;
+            ApplicationManager.getApplication().runWriteAction(() -> {
+                try {
+                    finalVirtualFile.createChildDirectory(null, subDirectories);
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+            });
+            virtualFile = finalVirtualFile.findChild(subDirectories);
+        }
+
+        return virtualFile;
+    }
+
 
     public CreateStructure() {
     }
