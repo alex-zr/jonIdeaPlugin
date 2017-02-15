@@ -35,12 +35,12 @@
 
   <actions>
 
-    <action class="ActionClassOnGit" id="actionId" icon="pic1_1.png">
+    <action class="actions.ActionClassOnGit" id="actionId" icon="pic1_1.png">
       <add-to-group group-id="ToolbarRunGroup" anchor="last"/>
       <keyboard-shortcut keymap="$default" first-keystroke="ctrl alt CLOSE_BRACKET"/>
     </action>
 
-    <action class="TaskCheker" id="actionSendTask" icon="checker.png">
+    <action class="actions.TaskCheker" id="actionSendTask" icon="checker.png">
       <add-to-group group-id="ToolbarRunGroup" anchor="last"/>
       <keyboard-shortcut keymap="$default" first-keystroke="ctrl alt OPEN_BRACKET"/>
     </action>
