@@ -1,4 +1,4 @@
-package ControlPack;
+package service;
 
 /**
  * Created by ${BIM} on 23.01.2017.

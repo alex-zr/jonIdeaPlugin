@@ -1,12 +1,12 @@
-package ControlPack;
+package service;
 
-import Exceptions.ClassNameNotFoundException;
-import Exceptions.PackageNotFoundException;
-import Sprints_Tasks.GraduateResult;
-import Sprints_Tasks.Sprint;
-import Sprints_Tasks.Task;
+import exception.ClassNameNotFoundException;
+import exception.PackageNotFoundException;
+import domain.GraduateResult;
+import domain.Sprint;
+import domain.Task;
 
-import Sprints_Tasks.TaskFile;
+import domain.TaskFile;
 import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
 import org.json.simple.parser.JSONParser;

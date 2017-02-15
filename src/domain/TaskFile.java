@@ -1,4 +1,4 @@
-package Sprints_Tasks;
+package domain;
 
 
 /**

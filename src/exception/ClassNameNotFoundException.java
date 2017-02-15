@@ -1,4 +1,4 @@
-package Exceptions;
+package exception;
 
 /**
  * Created by ${BIM} on 24.01.2017.

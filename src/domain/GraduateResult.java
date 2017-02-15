@@ -1,4 +1,4 @@
-package Sprints_Tasks;
+package domain;
 
 /**
  * Created by ${BIM} on 24.01.2017.

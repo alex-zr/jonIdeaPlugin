@@ -1,4 +1,4 @@
-package Sprints_Tasks;
+package domain;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -36,7 +36,7 @@ public class Sprint {
 
     @Override
     public String toString() {
-        return "Sprints_Tasks.Sprint [name=" + name + ", tasks=" + tasks + "]";
+        return "domain.Sprint [name=" + name + ", tasks=" + tasks + "]";
     }
 
 }

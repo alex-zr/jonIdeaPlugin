@@ -1,14 +1,12 @@
-package ControlPack;
+package service;
 
 import java.io.*;
 import java.net.*;
 
-import Exceptions.BadCredentialsException;
-import Exceptions.ClassNameNotFoundException;
-import Exceptions.PackageNotFoundException;
-import Sprints_Tasks.Sprint;
-import org.json.simple.parser.JSONParser;
-import org.json.simple.parser.ParseException;
+import exception.BadCredentialsException;
+import exception.ClassNameNotFoundException;
+import exception.PackageNotFoundException;
+import domain.Sprint;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -23,9 +21,9 @@ import ua.com.jon.preference.PrefUtil;
 */
 
 
-/*import Sprints_Tasks.Sprint;
-import Sprints_Tasks.Task;
-import Sprints_Tasks.TaskFile;
+/*import domain.Sprint;
+import domain.Task;
+import domain.TaskFile;
 
 import java.io.BufferedReader;
 import java.io.DataOutputStream;

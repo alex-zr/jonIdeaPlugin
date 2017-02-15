@@ -1,9 +1,9 @@
-package ControlPack;
+package service;
 
-import Exceptions.ClassNameNotFoundException;
-import Exceptions.PackageNotFoundException;
-import Sprints_Tasks.Sprint;
-import Sprints_Tasks.Task;
+import exception.ClassNameNotFoundException;
+import exception.PackageNotFoundException;
+import domain.Sprint;
+import domain.Task;
 import com.intellij.openapi.actionSystem.AnActionEvent;
 import com.intellij.ui.table.JBTable;
 import javafx.collections.FXCollections;

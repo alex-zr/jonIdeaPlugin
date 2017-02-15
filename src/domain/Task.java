@@ -1,4 +1,4 @@
-package Sprints_Tasks;
+package domain;
 
 /**
  * Created by User on 29.11.2016.

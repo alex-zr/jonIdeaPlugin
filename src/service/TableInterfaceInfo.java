@@ -1,6 +1,6 @@
-package ControlPack;
+package service;
 
-import Sprints_Tasks.TaskFile;
+import domain.TaskFile;
 
 /**
  * Created by User on 29.11.2016.
