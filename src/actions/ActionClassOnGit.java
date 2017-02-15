@@ -94,11 +94,8 @@ public class ActionClassOnGit extends AnAction {
                 return;
             }
 
-            if (contentRoot == null) {
-                Messages.showErrorDialog("Module not found " + file.getPath(), "Source folder settings");
-            }
             ContentEntry contentEntry = model.addContentEntry(baseDir);
-            boolean isTestRoot = false;
+            final boolean isTestRoot = false;
             contentEntry.addSourceFolder(contentRoot, isTestRoot);
             model.commit();
 
