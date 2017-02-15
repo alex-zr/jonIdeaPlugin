@@ -116,7 +116,7 @@ public class JSONDer {
                 return tokens[classIdx + 1];
             }
         }
-        throw new PackageNotFoundException("В задании отсутствует объявление пакета");
+        throw new PackageNotFoundException("Package declaration error");
     }
 
     public String[] extractClassNames(String classCode) throws ClassNameNotFoundException {
@@ -136,7 +136,7 @@ public class JSONDer {
             }
         }
         if (classNames.isEmpty()) {
-            throw new ClassNameNotFoundException("В задании отсутствует класс");
+            throw new ClassNameNotFoundException("Class not found in the task");
         }
         return classNames.toArray(new String[classNames.size()]);
     }
@@ -160,7 +160,7 @@ public class JSONDer {
             e.printStackTrace();
         }
 
-        return new GraduateResult("", "Ошибка проверки задания");
+        return new GraduateResult("", "Task validation error");
     }
 
 }
