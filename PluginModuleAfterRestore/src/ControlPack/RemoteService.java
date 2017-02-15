@@ -43,7 +43,6 @@ public class RemoteService {
     // private String login;
     // private String password;
     private final String baseUrl = "http://in.jon.com.ua/";
-    // private final String baseUrl = "http://localhost:8081";
     private final String USER_AGENT = "Mozilla/5.0 (X11; Linux i686) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/41.0.2272.89 Safari/537.36";
     private String cookies;
     private JSONDer jsonDer = new JSONDer();
@@ -203,13 +202,11 @@ public class RemoteService {
         }
     }
 
-    private HttpURLConnection auth(String urlParameters, String jonAddr,
-                                   HttpURLConnection conn) throws Exception {
+    private HttpURLConnection auth(String urlParameters, String jonAddr, HttpURLConnection conn) throws Exception {
         cookies = conn.getHeaderField("Set-Cookie");
         conn.disconnect();
 
-        conn = (HttpURLConnection) new URL(baseUrl + "/login")
-                .openConnection();
+        conn = (HttpURLConnection) new URL(baseUrl + "/login").openConnection();
         conn.addRequestProperty("Cookie", cookies);
         conn.setInstanceFollowRedirects(false);
         conn.setRequestMethod("POST");

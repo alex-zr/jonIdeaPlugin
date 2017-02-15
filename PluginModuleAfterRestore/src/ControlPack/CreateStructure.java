@@ -5,9 +5,20 @@ import Sprints_Tasks.Task;
 import com.intellij.openapi.actionSystem.AnActionEvent;
 import com.intellij.openapi.actionSystem.CommonDataKeys;
 import com.intellij.openapi.application.ApplicationManager;
+import com.intellij.openapi.fileTypes.FileType;
+import com.intellij.openapi.fileTypes.FileTypeRegistry;
 import com.intellij.openapi.project.Project;
+import com.intellij.openapi.util.Key;
+import com.intellij.openapi.vcs.checkout.CheckoutFolderToTheSameFolder;
 import com.intellij.openapi.vfs.VirtualFile;
+import com.intellij.openapi.vfs.VirtualFileManager;
+import com.intellij.openapi.vfs.VirtualFilePropertyEvent;
+import com.intellij.openapi.vfs.VirtualFileSystem;
+import com.intellij.openapi.vfs.impl.VirtualFileManagerImpl;
+import com.intellij.openapi.vfs.newvfs.FileAttribute;
+import com.intellij.openapi.vfs.newvfs.VirtualFileFilteringListener;
 
+import javax.help.plaf.basic.BasicFavoritesNavigatorUI;
 import java.io.*;
 import java.nio.charset.Charset;
 
@@ -29,6 +40,11 @@ public class CreateStructure {
         for (int i = 0; i < project.getBaseDir().getChildren().length; i++) {
             VirtualFile virtualFile = project.getBaseDir().getChildren()[i].getCanonicalFile();
 
+         /*   if (virtualFile.getName().equals("src")) {
+                FileAttribute fileAttribute = new FileAttribute("resources");
+                fileAttribute.writeAttribute(virtualFile);
+                System.out.println(virtualFile);
+            }*/
             for (int z = 0; z < virtualFile.getChildren().length; z++) {
                 VirtualFile virtualFile1 = virtualFile.getChildren()[z].getCanonicalFile();
 
@@ -38,6 +54,9 @@ public class CreateStructure {
                         VirtualFile folderComponent = virtualFile1.getChildren()[w];
 
                         if (folderComponent.getName().equals("java")) {
+
+                            VirtualFileSystem vfs = folderComponent.getFileSystem();
+
 
                             String taskUrl = getChousenTask().getTaskFile().getFileUrl();
 

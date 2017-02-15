@@ -48,7 +48,12 @@ public class JSONDer {
                     String taskName = (String) jsonTask.get("name");
                     String taskCode = (String) jsonTask.get("text");
                     String classPath = (String) jsonTask.get("classPath");
-                    classPath = "session1";
+                    //System.out.println(taskName + " taskName " + classPath + " classPass");
+
+
+                    if (taskName.equals("3. Справочник ноутбуков")) {
+                        classPath = "sprint1/session1/Task1";
+                    }
                     String taskinfoText = (String) jsonTask.get("text");
                     if (taskCode.isEmpty()) {
                         taskCode = (String) jsonTask.get("material");

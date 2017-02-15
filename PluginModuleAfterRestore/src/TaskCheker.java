@@ -30,11 +30,13 @@ public class TaskCheker extends AnAction {
         String path = anActionEvent.getData(CommonDataKeys.VIRTUAL_FILE).getPath();
         File taskFile = new File(path);
         try {
-            List<String> solwedTask = Files.readAllLines(Paths.get(path), Charset.defaultCharset());
 
+            List<String> solvedTask = Files.readAllLines(Paths.get(path), Charset.defaultCharset());
+
+            System.out.println(solvedTask.get(0));
+/*
             JSONObject jo = new JSONObject();
-            jo.append(taskFile.getName(), taskFile);
-
+            jo.append(taskFile.getName(), taskFile);*/
             // System.out.println(solwedTask);
             // System.out.println(jo);
 
@@ -44,8 +46,6 @@ public class TaskCheker extends AnAction {
         } catch (FileNotFoundException e) {
             e.printStackTrace();
         } catch (IOException e) {
-            e.printStackTrace();
-        } catch (JSONException e) {
             e.printStackTrace();
         }
 
