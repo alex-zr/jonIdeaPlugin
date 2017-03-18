@@ -26,7 +26,7 @@ public class TaskChecker extends AnAction {
         RemoteService remoteService = new RemoteService();
         try {
             remoteService.getUserSprints();
-            System.out.println(remoteService.graduateTask(anActionEvent.getData(CommonDataKeys.EDITOR).getDocument().getText()));
+            System.out.println(remoteService.graduateTask(anActionEvent.getData(CommonDataKeys.EDITOR).getDocument().getText(),anActionEvent));
         } catch (ClassNameNotFoundException e) {
             e.printStackTrace();
         } catch (PackageNotFoundException e) {

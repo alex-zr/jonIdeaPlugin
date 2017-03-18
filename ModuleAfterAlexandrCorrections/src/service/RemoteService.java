@@ -3,6 +3,11 @@ package service;
 import java.io.*;
 import java.net.*;
 
+import com.intellij.openapi.actionSystem.AnActionEvent;
+import com.intellij.openapi.actionSystem.CommonDataKeys;
+import com.intellij.openapi.fileEditor.FileDocumentManager;
+import com.intellij.openapi.project.Project;
+import com.intellij.openapi.vfs.VirtualFile;
 import domain.GraduateResult;
 import domain.Task;
 import domain.TaskFile;
@@ -10,31 +15,12 @@ import exception.BadCredentialsException;
 import exception.ClassNameNotFoundException;
 import exception.PackageNotFoundException;
 import domain.Sprint;
+import org.codehaus.jettison.json.JSONArray;
+import org.codehaus.jettison.json.JSONException;
+import org.codehaus.jettison.json.JSONObject;
 
 import java.util.ArrayList;
 import java.util.List;
-
-//import ua.com.jon.Activator;
-/*
-import ua.com.jon.domain.GraduateResult;
-import ua.com.jon.exceptions.BadCredentialsException;
-import ua.com.jon.exceptions.ClassNameNotFoundException;
-import ua.com.jon.exceptions.PackageNotFoundException;
-import ua.com.jon.preference.PrefUtil;
-*/
-
-
-/*import domain.Sprint;
-import domain.Task;
-import domain.TaskFile;
-
-import java.io.BufferedReader;
-import java.io.DataOutputStream;
-import java.io.InputStreamReader;
-import java.io.UnsupportedEncodingException;
-import java.net.*;
-import java.util.ArrayList;
-import java.util.List;*/
 
 /**
  * Created by User on 29.11.2016.
@@ -65,10 +51,7 @@ public class RemoteService {
     public Task getTask(String packageName, String className) throws ClassNameNotFoundException {
         for (Sprint sprint : sprints) {
             for (Task task : sprint.getTasks()) {
-
-
                 for (int i = 0; i < task.getTaskFile().size(); i++) {
-
                     if (task.getTaskFile().get(i).getClassname() != null
                             && task.getTaskFile().get(i).getClassname().equals(className)
                             && task.getPackageName() != null
@@ -76,13 +59,12 @@ public class RemoteService {
                         return task;
                     }
                 }
-
             }
         }
         throw new ClassNameNotFoundException("Внутренняя ошибка, не найден проверяемый класс, или пакет");
     }
 
-    public GraduateResult graduateTask(String taskCode) throws ClassNameNotFoundException, PackageNotFoundException {
+    public GraduateResult graduateTask(String taskCode, AnActionEvent anActionEvent) throws ClassNameNotFoundException, PackageNotFoundException {
         if (sprints.isEmpty()) {
             throw new ClassNameNotFoundException("Нет загруженных задач, попробуйте \"Обновить\" задания");
         }
@@ -90,37 +72,56 @@ public class RemoteService {
       /*  if (PreferenceConst.DEFAULT_LOGIN.equals(PrefUtil.getLoginOrSaveDefault())) {
             consoleService.write("Внимание, решение не сохранено. Введите свои логин и пароль!");
         }*/
-        String className = jsonDer.extractClassNames(taskCode)[0];
-        String packageName = jsonDer.extractPackageName(taskCode).replace(";", "");
 
-        Task task = getTask(packageName, className);
+        JSONArray jsonArray = new JSONArray();
+        JSONObject jsonTaskObj;
+        StringBuilder result = null;
 
-        TaskFile taskFile = new TaskFile();
-        taskFile.setFileContent(taskCode);
-        task.getTaskFile().add(taskFile);
-        Long taskId = task.getId();
-        Long templateId = task.getTemplateId();
-        StringBuilder result = new StringBuilder();
+        VirtualFile vf = anActionEvent.getData(CommonDataKeys.VIRTUAL_FILE).getParent().getCanonicalFile();
 
-        try {
-            result.append(URLEncoder.encode("taskCode", "UTF-8"));
-            result.append('=');
-            result.append(URLEncoder.encode(taskCode, "UTF-8"));
-            result.append("&");
-            result.append(URLEncoder.encode("id", "UTF-8"));
-            result.append('=');
-            result.append(URLEncoder.encode(String.valueOf(taskId), "UTF-8"));
-            result.append("&");
-            result.append(URLEncoder.encode("templateId", "UTF-8"));
-            result.append('=');
-            result.append(URLEncoder.encode(String.valueOf(templateId), "UTF-8"));
-        } catch (UnsupportedEncodingException e1) {
-            e1.printStackTrace();
-            //   consoleService.write("Внутренняя ошибка, не найдена кодировка " +  e1.getMessage());
+        for (int i = 0; i < vf.getChildren().length; i++) {
+
+            String className = vf.getChildren()[i].getName().replace(".java","");
+            String packageName = vf.getChildren()[i].getParent().getName();
+
+            Task task = getTask(packageName, className);
+
+            TaskFile taskFile = new TaskFile();
+            taskFile.setFileContent(FileDocumentManager.getInstance().getDocument(vf.getChildren()[i]).getText());
+            task.getTaskFile().add(taskFile);
+            Long taskId = task.getId();
+            Long templateId = task.getTemplateId();
+            result = new StringBuilder();
+
+            try {
+                result.append(URLEncoder.encode("taskCode", "UTF-8"));
+                result.append('=');
+                result.append(URLEncoder.encode(taskCode, "UTF-8"));
+                result.append("&");
+                result.append(URLEncoder.encode("id", "UTF-8"));
+                result.append('=');
+                result.append(URLEncoder.encode(String.valueOf(taskId), "UTF-8"));
+                result.append("&");
+                result.append(URLEncoder.encode("templateId", "UTF-8"));
+                result.append('=');
+                result.append(URLEncoder.encode(String.valueOf(templateId), "UTF-8"));
+            } catch (UnsupportedEncodingException e1) {
+                e1.printStackTrace();
+                //consoleService.write("Внутренняя ошибка, не найдена кодировка " +  e1.getMessage());
+            }
+
+            jsonTaskObj = new JSONObject();
+            try {
+                jsonTaskObj.put("id", task.getId());
+                jsonTaskObj.put("name", task.getName());
+                jsonTaskObj.put("taskFile", task.getTaskFile());
+            } catch (JSONException e) {
+                e.printStackTrace();
+            }
+            jsonArray.put(jsonTaskObj);
         }
 
         String urlParameters = result.toString();
-
         String gradAddr = baseUrl + "/user/graduate";
         StringBuilder sb = new StringBuilder();
 
@@ -178,7 +179,7 @@ public class RemoteService {
             HttpURLConnection conn = (HttpURLConnection) url.openConnection();
             conn.setDoInput(true);
             conn.setInstanceFollowRedirects(false);
-            conn.setReadTimeout(5000);
+            conn.setReadTimeout(10000);
             conn.setUseCaches(false);
 
             if (conn.getResponseCode() == 302) {
@@ -219,7 +220,7 @@ public class RemoteService {
         conn.addRequestProperty("Cookie", cookies);
         conn.setInstanceFollowRedirects(false);
         conn.setRequestMethod("POST");
-        conn.setReadTimeout(5000);
+        conn.setReadTimeout(10000);
         conn.addRequestProperty("User-Agent", USER_AGENT);
         conn.setDoOutput(true);
         DataOutputStream wr1 = new DataOutputStream(

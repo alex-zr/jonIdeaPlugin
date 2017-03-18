@@ -75,7 +75,6 @@ public class JSONDer {
                         System.out.println("Нету имени задания (которое для поьзователя)");
                     }
 
-
                     if (!taskinfoText.isEmpty()) {
                         task.setTaskInfo(taskinfoText);
                     } else {
@@ -99,7 +98,6 @@ public class JSONDer {
                     taskFileList.add(taskFile);
                     task.setTaskFile(taskFileList);
 
-
                     for (int y = 0; y < task.getTaskFile().size(); y++) {
                         className = "TaskClassName_" + y;
                         task.getTaskFile().get(y).setClassname(className);
@@ -116,7 +114,6 @@ public class JSONDer {
                     }
                     task.setPackageName(packageName);
                     // task.setClassName(taskName);
-
 
                     taskList.add(task);
                 }

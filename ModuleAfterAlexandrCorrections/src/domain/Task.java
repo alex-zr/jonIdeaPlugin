@@ -12,7 +12,6 @@ public class Task {
     private String name;
     private String taskInfo;
     private List<TaskFile> taskFile;
-    private String className; /*name*/
     private String packageName;/*name*/
     private Long templateId;
 
@@ -59,13 +58,13 @@ public class Task {
         this.taskFile = taskFile;
     }
 
-    public String getClassName() {
+ /*   public String getClassName() {
         return className;
     }
 
     public void setClassName(String className) {
         this.className = className;
-    }
+    }*/
 
     public String getPackageName() {
         return packageName;

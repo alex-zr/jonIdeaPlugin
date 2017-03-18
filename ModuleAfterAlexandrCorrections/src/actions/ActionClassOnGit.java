@@ -1,14 +1,9 @@
 package actions;
 
-import domain.Sprint;
-import exception.ClassNameNotFoundException;
-import exception.PackageNotFoundException;
 import service.SwingTaskTable;
-import service.RemoteService;
 import com.intellij.openapi.actionSystem.AnAction;
 import com.intellij.openapi.actionSystem.AnActionEvent;
 
-import java.util.List;
 import java.util.logging.*;
 
 /**
