@@ -6,7 +6,6 @@ import java.net.*;
 import com.intellij.openapi.actionSystem.AnActionEvent;
 import com.intellij.openapi.actionSystem.CommonDataKeys;
 import com.intellij.openapi.fileEditor.FileDocumentManager;
-import com.intellij.openapi.project.Project;
 import com.intellij.openapi.vfs.VirtualFile;
 import domain.GraduateResult;
 import domain.Task;
@@ -53,7 +52,7 @@ public class RemoteService {
             for (Task task : sprint.getTasks()) {
                 for (int i = 0; i < task.getTaskFile().size(); i++) {
                     if (task.getTaskFile().get(i).getClassname() != null
-                            && task.getTaskFile().get(i).getClassname().equals(className)
+                          //  && task.getTaskFile().get(i).getClassname().equals(className)
                             && task.getPackageName() != null
                             && task.getPackageName().equals(packageName)) {
                         return task;

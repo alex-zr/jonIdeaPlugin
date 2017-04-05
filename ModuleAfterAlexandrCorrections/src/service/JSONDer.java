@@ -126,7 +126,7 @@ public class JSONDer {
         }
         return sprintsList;
     }
-
+/*
     public String extractPackageName(String classCode) throws PackageNotFoundException {
         if (classCode == null || classCode.isEmpty() || classCode.equals('\n')) {
             return UNKNOWN;
@@ -181,7 +181,7 @@ public class JSONDer {
         }
 
         return tokens;
-    }
+    }*/
 
     public GraduateResult getGraduateResult(String result) {
         try {

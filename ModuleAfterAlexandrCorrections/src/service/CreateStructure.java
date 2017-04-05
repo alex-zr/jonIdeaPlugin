@@ -67,7 +67,7 @@ public class CreateStructure {
                     if (folderComponent.getName().equals("java")) {
 
                         String taskUrl = getChousenTask().getTaskFile().get(0).getFileUrl();
-                        VirtualFile finalFolder = null;
+                        VirtualFile finalFolder;
 
                         finalFolder = structureCreation(folderComponent, taskUrl);
 
