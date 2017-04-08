@@ -9,8 +9,8 @@ import java.util.logging.*;
 /**
  * Created by ${BIM} on 11.11.2016.
  */
-public class ActionClassOnGit extends AnAction {
-    private static Logger log = Logger.getLogger(ActionClassOnGit.class.getName());
+public class TaskDownloader extends AnAction {
+    private static Logger log = Logger.getLogger(TaskDownloader.class.getName());
 
     @Override
     public void actionPerformed(AnActionEvent anActionEvent) {
