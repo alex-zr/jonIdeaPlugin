@@ -57,15 +57,7 @@ public class Task {
     public void setTaskFile(List<TaskFile> taskFile) {
         this.taskFile = taskFile;
     }
-
- /*   public String getClassName() {
-        return className;
-    }
-
-    public void setClassName(String className) {
-        this.className = className;
-    }*/
-
+    
     public String getPackageName() {
         return packageName;
     }
