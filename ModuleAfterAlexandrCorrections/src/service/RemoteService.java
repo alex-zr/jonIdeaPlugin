@@ -63,7 +63,7 @@ public class RemoteService {
         throw new ClassNameNotFoundException("Внутренняя ошибка, не найден проверяемый класс, или пакет");
     }
 
-    public GraduateResult graduateTask(String taskCode, AnActionEvent anActionEvent) throws ClassNameNotFoundException, PackageNotFoundException {
+    public GraduateResult graduateTask(AnActionEvent anActionEvent) throws ClassNameNotFoundException, PackageNotFoundException {
         if (sprints.isEmpty()) {
             throw new ClassNameNotFoundException("Нет загруженных задач, попробуйте \"Обновить\" задания");
         }
@@ -90,6 +90,7 @@ public class RemoteService {
             task.getTaskFile().add(taskFile);
             Long taskId = task.getId();
             Long templateId = task.getTemplateId();
+            String taskCode=taskFile.getFileComponent();
             result = new StringBuilder();
 
             try {
