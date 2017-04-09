@@ -1,23 +1,22 @@
 package service;
 
-import java.io.*;
-import java.net.*;
-
 import com.intellij.openapi.actionSystem.AnActionEvent;
 import com.intellij.openapi.actionSystem.CommonDataKeys;
 import com.intellij.openapi.fileEditor.FileDocumentManager;
 import com.intellij.openapi.vfs.VirtualFile;
 import domain.GraduateResult;
+import domain.Sprint;
 import domain.Task;
 import domain.TaskFile;
 import exception.BadCredentialsException;
 import exception.ClassNameNotFoundException;
 import exception.PackageNotFoundException;
-import domain.Sprint;
 import org.codehaus.jettison.json.JSONArray;
 import org.codehaus.jettison.json.JSONException;
 import org.codehaus.jettison.json.JSONObject;
 
+import java.io.*;
+import java.net.*;
 import java.util.ArrayList;
 import java.util.List;
 

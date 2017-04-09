@@ -1,8 +1,8 @@
-<idea-plugin version="2">
+<idea-plugin>
   <id>ua.com.jon.idea.plugin</id>
   <name>jon.com.ua plugin</name>
   <version>1.0</version>
-  <vendor email="@jon.com.ua" url="http://www.jon.com.ua">jon.com.ua</vendor>
+  <vendor email="support@yourcompany.com" url="http://www.yourcompany.com">YourCompany</vendor>
 
   <description><![CDATA[
       Enter short description for your plugin here.<br>
@@ -16,10 +16,13 @@
   </change-notes>
 
   <!-- please see http://www.jetbrains.org/intellij/sdk/docs/basics/getting_started/build_number_ranges.html for description -->
-  <idea-version since-build="141.0"/>
+  <idea-version since-build="145.0"/>
 
   <!-- please see http://www.jetbrains.org/intellij/sdk/docs/basics/getting_started/plugin_compatibility.html
        on how to target different products -->
+  <!-- uncomment to enable plugin in all products
+  <depends>com.intellij.modules.lang</depends>
+  -->
 
   <depends>com.intellij.modules.lang</depends>
   <depends>com.intellij.modules.platform</depends>
@@ -27,26 +30,23 @@
   <depends>com.intellij.modules.xml</depends>
   <depends>com.intellij.modules.xdebugger</depends>
   <depends>com.intellij.modules.java</depends>
-
+  
   <extensions defaultExtensionNs="com.intellij">
     <!-- Add your extensions here -->
   </extensions>
 
-
   <actions>
-
-    <action class="actions.ActionClassOnGit" id="actionId" icon="pic1_1.png">
+    <!-- Add your actions here -->
+    <action class="actions.TaskDownloader" id="actionId" icon="/icons/pic1.png">
       <add-to-group group-id="ToolbarRunGroup" anchor="last"/>
       <keyboard-shortcut keymap="$default" first-keystroke="ctrl alt CLOSE_BRACKET"/>
     </action>
 
-    <action class="actions.TaskCheker" id="actionSendTask" icon="checker.png">
+    <action class="actions.TaskChecker" id="actionSendTask" icon="/icons/checker.png">
       <add-to-group group-id="ToolbarRunGroup" anchor="last"/>
       <keyboard-shortcut keymap="$default" first-keystroke="ctrl alt OPEN_BRACKET"/>
     </action>
 
-
   </actions>
-
 
 </idea-plugin>
